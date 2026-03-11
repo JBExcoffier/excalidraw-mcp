@@ -48,7 +48,6 @@ To use this MCP from **Cursor** so the AI can draw Excalidraw sketches in chat:
      }
    }
    ```
-   Replace `/absolute/path/to/excalidraw-mcp` with the real path (e.g. `~/somepath/excalidraw-mcp` or a full path).
 
    **Option C — Cursor UI**  
    - Open **Cursor Settings** (Cmd + Shift + J on Mac, Ctrl + Shift + J on Windows/Linux).  
