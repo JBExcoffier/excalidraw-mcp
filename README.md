@@ -8,20 +8,10 @@ MCP server that streams hand-drawn Excalidraw diagrams with smooth viewport came
 
 Works with any client that supports [MCP Apps](https://modelcontextprotocol.io/docs/extensions/apps) — Claude, ChatGPT, VS Code, Goose, and others. If something doesn't work, please [open an issue](https://github.com/antonpk1/excalidraw-mcp-app/issues).
 
-### Remote (recommended)
-
-### `https://mcp.excalidraw.com`
-
-For apps that don't yet have an official integration, you can add a custom MCP / connector (naming can vary between apps).
 
 ### Local
 
-**Option A: Download Extension**
-
-1. Download `excalidraw-mcp-app.mcpb` from [Releases](https://github.com/antonpk1/excalidraw-mcp-app/releases)
-2. Double-click to install in Claude Desktop
-
-**Option B: Build from Source**
+**Build from Source**
 
 ```bash
 git clone https://github.com/excalidraw/excalidraw-mcp.git
@@ -29,20 +19,55 @@ cd excalidraw-mcp-app
 pnpm install && pnpm run build
 ```
 
-Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+#### _Cursor_
 
-```json
-{
-  "mcpServers": {
-    "excalidraw": {
-      "command": "node",
-      "args": ["/path/to/excalidraw-mcp-app/dist/index.js", "--stdio"]
-    }
-  }
-}
-```
+To use this MCP from **Cursor** so the AI can draw Excalidraw sketches in chat:
 
-Restart Claude Desktop.
+1. **Build the server** (if you haven’t already):
+   ```bash
+   cd /path/to/excalidraw-mcp
+   npm install
+   npm run build
+   ```
+   This produces `dist/index.js`.
+
+2. **Configure the MCP in Cursor** using one of these:
+
+   **Option A — Project config (recommended)**  
+   A `.cursor/mcp.json` is already in this repo. It points at this project’s `dist/index.js`. After building, just restart Cursor and the Excalidraw server will be available when this folder is the workspace.
+
+   **Option B — Global config**  
+   Create or edit `~/.cursor/mcp.json` and add:
+   ```json
+   {
+     "mcpServers": {
+       "excalidraw": {
+         "command": "node",
+         "args": ["/absolute/path/to/excalidraw-mcp/dist/index.js", "--stdio"]
+       }
+     }
+   }
+   ```
+   Replace `/absolute/path/to/excalidraw-mcp` with the real path (e.g. `~/Desktop/JBE/TESTS/excalidraw-mcp` or a full path).
+
+   **Option C — Cursor UI**  
+   - Open **Cursor Settings** (Cmd + Shift + J on Mac, Ctrl + Shift + J on Windows/Linux).  
+   - Go to **Tools & MCP** → **Add new MCP server**.  
+   - Set **Name** to `excalidraw`.  
+   - Set **Type** to `command`.  
+   - **Command**: `node`.  
+   - **Args**: `["/absolute/path/to/excalidraw-mcp/dist/index.js", "--stdio"]` (use your actual path).
+
+3. **Restart Cursor** so it picks up the MCP.
+
+4. **Use it in chat**  
+   In a Cursor chat, ask to draw something (e.g. “Draw a simple flowchart with three boxes and arrows” or “Sketch a system architecture with a client, API, and database”). The AI will use the Excalidraw MCP tools (`read_me` and `create_view`) to produce a diagram in the chat. You can approve tool use when prompted or enable auto-run in **Tools & MCP** if you prefer.
+
+**Troubleshooting**
+
+- **MCP not listed**: Confirm `dist/index.js` exists after `npm run build`, then restart Cursor fully.  
+- **Logs**: **View** → **Output** (Cmd + Shift + U / Ctrl + Shift + U) → choose **MCP Logs**.  
+- **Cloud Agents**: Use the project-level `.cursor/mcp.json` so cloud agents can see the server.
 
 ## Usage
 
