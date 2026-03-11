@@ -58,9 +58,11 @@ To use this MCP from **Cursor** so the AI can draw Excalidraw sketches in chat:
    - **Command**: `node`.  
    - **Args**: `["/absolute/path/to/excalidraw-mcp/dist/index.js", "--stdio"]` (use your actual path).
 
-3. **Restart Cursor** so it picks up the MCP.
+3. In **Settings → Tools & MCP**, enable the **excalidraw** MCP server — it is **disabled by default** even after you add or configure it.
 
-4. **Use it in chat**  
+4. **Restart Cursor** so it picks up the MCP.
+
+5. **Use it in chat**  
    In a Cursor chat, ask to draw something (e.g. “Draw a simple flowchart with three boxes and arrows” or “Sketch a system architecture with a client, API, and database”). The AI will use the Excalidraw MCP tools (`read_me` and `create_view`) to produce a diagram in the chat. You can approve tool use when prompted or enable auto-run in **Tools & MCP** if you prefer.
 
 **Troubleshooting**
